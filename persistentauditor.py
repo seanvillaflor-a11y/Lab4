@@ -1,6 +1,7 @@
 #global constant
 MAX_CAPACITY=500
 TAX_RATE = 0.1
+INVENTORY_FILE = "inventory.txt"
 
 def get_valid_input():
         user_input = input("Enter stock quantity or type quit to exit: ")
@@ -49,6 +50,21 @@ def print_final_summary(deliveries_processed, rejected, total_tax_collected):
     generate_report(deliveries_processed, rejected)
     print("Total tax collected: $" + str(round(total_tax_collected, 2)))
 
+def load_inventory():
+    with open(INVENTORY_FILE, "r") as file:
+        data = file.readlines()
+
+    inventory_total=int(float(data[0].strip()))
+    history=[int(float(line.strip())) for line in data[1:] if  data.strip() != ""]
+    #history equals float line.strip() where read line, 
+    #continue doing this as long there is no blank on the data
+
+def save_inventory(quantity, inventory):
+    with open(INVENTORY_FILE, "w") as file: #refer to inventory.txt, init as var file
+        file.write(str(quantity) + "\n")    #call write function to input function var
+        for amount in inventory:
+            file.write(str(amount)) + "\n"
+
 
 
 def main():
@@ -83,6 +99,8 @@ def main():
 
     print_final_summary(deliveries_processed, rejected, total_tax_collected)
 
+    testload = load_inventory()
+    print(testload)
 
 if __name__ == "__main__":
     main()    
